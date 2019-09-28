@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hykVue3</title>
+    <link type="text/css" rel="stylesheet" href="reset.css"/>
+    <style type="text/css">
+        #cartTable{margin:30px auto; border-collapse: collapse;}
+        td,th{padding:5px 10px;}
+        .txtCnt{width:30px; margin:0px 5px;}
+        button{padding:5px;}
+        .total{font-size:18px; color:darkred; font-weight:800;}
+    </style>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="cart">
+    <table border="1" cellspacing="0" id="cartTable" >
+        <thead>
+        <tr>
+            <th><input type="checkbox" v-model="output" @change="allChange" >全选</th>
+            <th>商品序号</th>
+            <th>商品编号</th>
+            <th>商品名称</th>
+            <th>商品数量</th>
+            <th>商品单价</th>
+            <th>移出</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item,index) in msg">
+            <td><input type="checkbox" v-model="sp" :value="index+1"></td>
+            <td>{{index+1}}</td>
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>
+                <button @click="Click1(index)">-</button>
+                {{item.count}}
+                <button @click="Click2(index)">+</button>
+            </td>
+            <td>{{item.price}}</td>
+            <td><button @click="Click3(index)">删除</button></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr v-if="msg.length"><!--购物车中有商品时显示-->
+            <td colspan="7">总价为：<span class="total" v-html="p"></span>元</td>
+        </tr>
+        <tr v-else><!--购物车中无商品时显示-->
+            <td colspan="7">此购物车中无商品</td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+    new Vue({
+        el:'#cart',
+        data() {
+            return{
+                msg:[{id:'0001',name:'iphoneX',count:1,price:6188},
+                    {id:'0002',name:'华为p30',count:2,price:5934},
+                    {id:'0003',name:'小米RedmiBook',count:1,price:4299},
+                    {id:'0004',name:'华为畅享9e',count:3,price:799}],
+                output:false,
+                sp:[],
+            }
+        },
+        methods:{
+            Click1(index) {
+                if (this.msg[index].count >1){
+                    this.msg[index].count--;
+                }
+            },
+            Click2(index) {
+                this.msg[index].count++;
+            },
+            Click3(index){
+                this.msg.splice(index, 1);
+            },
+            allChange(){
+                if (this.output){
+                    this.sp=[1,2,3,4]
+                }else {
+                    this.sp=[]
+                }
+            }
+        },
+        computed:{
+            p(){
+                var money= 0;
+                for (var i=0; i<this.sp.length;i++) {
+                    if (this.sp[i]==1){
+                        money+= this.msg[0].count*this.msg[0].price;
+                    }
+                    if (this.sp[i]==2){
+                        money+= this.msg[1].count*this.msg[1].price;
+                    }
+                    if (this.sp[i]==3){
+                        money+= this.msg[2].count*this.msg[2].price;
+                    }
+                    if (this.sp[i]==4){
+                        money+= this.msg[3].count*this.msg[3].price;
+                    }
+                }
+                return money;
+            },
+            theHobbies(){
+                var h=0;
+                this.sp.forEach(function (item) {
+                    h+=parseInt(item);
+                });
+                return h;
+            }
+        },
+        watch:{
+            theHobbies() {
+                if (this.theHobbies == 10) {
+                    this.output=true;
+                }else {
+                    this.output=false;
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

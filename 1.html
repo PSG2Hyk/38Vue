@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hykVue1</title>
+    <script src="vue.js"></script>
+    <style type="text/css">
+        *{margin:0px; padding:0px;}
+        body{font-size:14px;}
+        #demo{width:1000px; margin:10px auto;}
+        #bigImg{float:left; margin-right:10px; width: 150px; height: 150px;}
+        #sImg{float:left; margin-right:10px; width: 50px; height: 50px;}
+        .item{
+            width:340px;
+            line-height:30px;
+            box-sizing: border-box;
+            background:#f7f7f7;
+            border:1px solid #f7f7f7;
+            margin:10px 0px;
+            float:left;
+        }
+        .select{ border:1px solid darkred;}
+    </style>
+</head>
+<body>
+<div id="demo">
+    <img id="bigImg" :src="url2">
+    <div v-for="(item,index) in list" :class=['item',{'select':a==index}] @click="doClick(index)">
+        <img id="sImg" :src='item.imgUrl'>
+        {{item.msg}}
+    </div>
+</div>
+<script>
+    new Vue({
+        el:"#demo",
+        data(){
+            return{
+                list:[{msg:'男款鞋子红蓝黄',imgUrl:'img/1.jpg',imgBigUrl:'img/1.jpg'},
+                    {msg:'男款鞋子黑',imgUrl:'img/2.jpg',imgBigUrl:'img/2.jpg'},
+                    {msg:'男款鞋子黑白',imgUrl:'img/3.jpg',imgBigUrl:'img/3.jpg'},
+                    {msg:'男款鞋子白',imgUrl:'img/4.jpg',imgBigUrl:'img/4.jpg'}],
+                a:0,
+                url:'img/1.jpg'
+            }
+        },
+        methods:{
+            doClick:function(index){
+                    this.a =index,
+                    this.url =this.list[index].imgBigUrl
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
